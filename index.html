@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Julien MP3 Player</title>
+
+<link rel="stylesheet" type="text/css" href="css/julienMP3Player.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="js/jquery.julienMP3Player.js"></script>
+
+<script type="text/javascript">
+soundManager.url = './swf/';
+soundManager.onload = function(){
+  $(function(){
+    //var myMusic = soundManager.createSound({
+    //    id: 'music',
+    //    url: './mp3/Vegas_Glitz.mp3'
+    //});
+    //myMusic.play();
+
+    $('#player').julienMP3Player();
+  });
+}
+</script>
+</head>
+
+<body>
+  <ul id="player">
+    <li><a href="./mp3/Vegas_Glitz.mp3">Song 1</a></li>
+    <li><a href="./mp3/Sonatina.mp3">Song 2</a></li>
+  </ul>  
+  <a href="http://incompetech.com/">Thanks to incompetech.com for the music</a>
+</body>
+</html>
