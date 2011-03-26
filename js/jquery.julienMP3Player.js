@@ -10,6 +10,15 @@
     _stopSound: function(soundID){
       soundManager.getSoundById(soundID).stop();
     },
+    _getPrevTrackFrom: function(trackIDs, currentTrackID){
+      var currentIndex = trackIDs.indexOf(currentTrackID);
+      if (trackIDs[currentIndex - 1]){ // does the previous element exist?
+        return trackIDs[currentIndex - 1];
+      } else {
+        // otherwise, we're at the beginning, so return the last one
+        return trackIDs[trackIDs.length - 1];
+      }
+    },
     _getNextTrackFrom: function(trackIDs, currentTrackID){
       var currentIndex = trackIDs.indexOf(currentTrackID);
       if (trackIDs[currentIndex + 1]){ // does the next element exist?
@@ -17,15 +26,6 @@
       } else {
         // otherwise, we're at the end, so return the first one
         return trackIDs[0];
-      }
-    },
-    _getPrevTrackFrom: function(trackIDs, currentTrackID){
-      var currentIndex = trackIDs.indexOf(currentTrackID);
-      if (trackIDs[currentIndex - 1]){ // does the previous element exist?
-        return trackIDs[currentIndex + 1];
-      } else {
-        // otherwise, we're at the beginning, so return the last one
-        return trackIDs[trackIDs.length - 1];
       }
     }
   };
@@ -72,16 +72,27 @@
 
       var $jmp3_content = $(settings.markup);
 
+      // play current sound
       $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
         methods._playSound(currentSoundID); // play the current track
         return false;
       });
 
+      // stop current sound
       $jmp3_content.find('.jmp3_stop').bind('click.jmp3', function(){
         methods._stopSound(currentSoundID); // stop the current track
         return false;
       });
 
+      // play previous sound
+      $jmp3_content.find('.jmp3_prev').bind('click.jmp3', function(){
+        methods._stopSound(currentSoundID); // stop the currently playing sound
+        currentSoundID = methods._getPrevTrackFrom(trackIDs, currentSoundID); // currentSoundID = previous song
+        methods._playSound(currentSoundID); // play the previous track
+        return false;
+      });
+
+      // next
       $jmp3_content.find('.jmp3_next').bind('click.jmp3', function(){
         methods._stopSound(currentSoundID); // stop the currently playing sound
         currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID); // currentSoundID = next song
@@ -90,6 +101,7 @@
       });
 
       matchedObjects.after($jmp3_content);
+
     });
   };
 })(jQuery);
