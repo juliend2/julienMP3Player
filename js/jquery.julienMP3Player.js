@@ -1,4 +1,11 @@
 (function($){
+  var methods = {
+    _loading : function(){
+      //console.log(this, this.bytesLoaded, this.bytesTotal);
+      console.log(((this.bytesLoaded/this.bytesTotal)*100)+'%');
+    }
+  };
+
   $.fn.julienMP3Player = function(options){
     var settings = {
       joie: 2,
@@ -24,8 +31,9 @@
       $(this).find('li>a').each(function(i){
         var sound = soundManager.createSound({
           id: 'song' + i.toString(),
-          url: $(this).attr('href')
-        })
+          url: $(this).attr('href'),
+          whileloading: methods._loading
+        });
         tracks.push( sound );
       });
 
@@ -34,7 +42,7 @@
       var $jmp3_content = $(settings.markup);
 
       $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
-        tracks[0].togglePause(); // play the first track
+        tracks[0].play(); // togglePause(); // play/pause the first track
         return false;
       });
       $jmp3_content.find('.jmp3_stop').bind('click.jmp3', function(){
