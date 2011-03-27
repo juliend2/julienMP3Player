@@ -1,9 +1,14 @@
 .jmp3_container {
   background: #a2b4b9;
+  float: left;
+  clear: both;
 }
 .jmp3_container .jmp3_play,
 .jmp3_container .jmp3_pause,
-.jmp3_container .jmp3_stop {
+.jmp3_container .jmp3_stop,
+.jmp3_container .jmp3_next,
+.jmp3_container .jmp3_prev 
+{
   width: 16px; height: 16px;
   display: block;
   float: left;
@@ -17,4 +22,10 @@
 }
 .jmp3_container .jmp3_stop {
   background: url('../img/stop.png') no-repeat left top;
+}
+.jmp3_container .jmp3_prev {
+  background: url('../img/prev.png') no-repeat left top;
+}
+.jmp3_container .jmp3_next {
+  background: url('../img/next.png') no-repeat left top;
 }

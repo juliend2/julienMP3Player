@@ -36,8 +36,8 @@
                 <a href="#" class="jmp3_play">Play</a>\
                 <a href="#" class="jmp3_stop">Stop</a>\
                 <span class="jmp3_currentTrackName"></span>\
-                <a href="#" class="jmp3_next">Next</a>\
                 <a href="#" class="jmp3_prev">Previous</a>\
+                <a href="#" class="jmp3_next">Next</a>\
               </div>'
     };
 
