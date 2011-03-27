@@ -1,0 +1,23 @@
+h1. julienMP3Player
+
+jQuery plugin to embed an HTML5 MP3 player (multi-track).
+
+h2. Usage
+
+First thing, you must have a node like this in your markup:
+
+pre. <ul id="myplaylist">
+<li><a href="ave_maria.mp3">Ave Maria</a></li>
+<li><a href="adagio_in_c_minor.mp3">Adagio in C minor</a></li>
+<li><a href="valse.mp3">Valse</a></li>
+</ul>
+
+Then you need to call julienMP3Player on a jQuery object like this:
+
+pre. $('#myplaylist').julienMP3Player();
+
+h2. Dependencies
+
+# "jQuery":http://jquery.com
+# "SoundManager2":http://www.schillmania.com/projects/soundmanager2
+

@@ -1,5 +1,7 @@
 (function($){
 
+  $.julienMP3Player = {version: '0.1.0'};
+
   var methods = {
     _loading: function(){
       // console.log(((this.bytesLoaded/this.bytesTotal)*100)+'%');
