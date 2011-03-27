@@ -5,7 +5,7 @@
       // console.log(((this.bytesLoaded/this.bytesTotal)*100)+'%');
     },
     _playSound: function(soundID){
-      soundManager.getSoundById(soundID).play();
+      soundManager.getSoundById(soundID).togglePause();
     },
     _stopSound: function(soundID){
       soundManager.getSoundById(soundID).stop();
@@ -72,15 +72,21 @@
 
       var $jmp3_content = $(settings.markup);
 
-      // play current sound
+      // play/pause current sound
       $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
         methods._playSound(currentSoundID); // play the current track
+        if ($jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){
+          $jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
+        } else {
+          $jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
+        }
         return false;
       });
 
       // stop current sound
       $jmp3_content.find('.jmp3_stop').bind('click.jmp3', function(){
         methods._stopSound(currentSoundID); // stop the current track
+        $jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
         return false;
       });
 
@@ -89,6 +95,7 @@
         methods._stopSound(currentSoundID); // stop the currently playing sound
         currentSoundID = methods._getPrevTrackFrom(trackIDs, currentSoundID); // currentSoundID = previous song
         methods._playSound(currentSoundID); // play the previous track
+        $jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
         return false;
       });
 
@@ -97,6 +104,7 @@
         methods._stopSound(currentSoundID); // stop the currently playing sound
         currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID); // currentSoundID = next song
         methods._playSound(currentSoundID); // play the next track
+        $jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
         return false;
       });
 
@@ -105,3 +113,4 @@
     });
   };
 })(jQuery);
+

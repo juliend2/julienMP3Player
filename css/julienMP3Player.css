@@ -1,0 +1,20 @@
+.jmp3_container {
+  background: #a2b4b9;
+}
+.jmp3_container .jmp3_play,
+.jmp3_container .jmp3_pause,
+.jmp3_container .jmp3_stop {
+  width: 16px; height: 16px;
+  display: block;
+  float: left;
+  text-indent: -9999px;
+}
+.jmp3_container .jmp3_play {
+  background: url('../img/play.png') no-repeat left top;
+}
+.jmp3_container .jmp3_pause {
+  background: url('../img/pause.png') no-repeat left top;
+}
+.jmp3_container .jmp3_stop {
+  background: url('../img/stop.png') no-repeat left top;
+}
