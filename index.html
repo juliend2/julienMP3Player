@@ -10,12 +10,12 @@
 <script type="text/javascript" src="js/jquery.julienMP3Player.js"></script>
 
 <script type="text/javascript">
-soundManager.url = './swf/';
-soundManager.onload = function(){
   $(function(){
-    $('#player').julienMP3Player();
+    soundManager.url = './swf/';
+    soundManager.onload = function(){
+      $('#player').julienMP3Player();
+    }
   });
-}
 </script>
 </head>
 
