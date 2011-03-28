@@ -15,10 +15,9 @@ pre. <ul id="myplaylist">
 Then you need to call julienMP3Player on a jQuery object like this:
 
 pre. $(function(){
-  soundManager.url = './swf/'; // we set the path to the swf directory (for SoundManager2)
-  soundManager.onload = function(){ // once SoundManager2 is loaded, apply the mp3 player
-    $('#player').julienMP3Player();
-  }
+  $('#player').julienMP3Player({
+    soundManagerSwfURL: './swf/' // where the swf folder is located
+  });
 });
 
 h2. Dependencies

@@ -11,20 +11,21 @@
 
 <script type="text/javascript">
   $(function(){
-    soundManager.url = './swf/';
-    soundManager.onload = function(){
-      $('#player').julienMP3Player();
-    }
+    $('#player').julienMP3Player({
+      soundManagerSwfURL: './swf/',
+      autoplay: true
+    });
   });
 </script>
 </head>
 
 <body>
   <ul id="player">
-    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Rain 3.mp3">Sound 1</a></li>
-    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Frogs @ Yahoo!.mp3">Sound 2</a></li>
-    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Walking past sprinklers, mailbox.mp3">Sound 3</a></li>
-    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Cup of Coffee.mp3">Sound 4</a></li>
+    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Mak.mp3">Angry cow</a></li>
+    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Fancy%20Beer%20Bottle%20Pop.mp3">Fancy beer bottle pop</a></li>
+    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Rain 3.mp3">Rain</a></li>
+    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Frogs @ Yahoo!.mp3">Frogs</a></li>
+    <li><a href="http://www.freshly-ground.com/data/audio/binaural/Walking past sprinklers, mailbox.mp3">walking past sprinklers</a></li>
   </ul>  
 </body>
 </html>
