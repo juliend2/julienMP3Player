@@ -1,6 +1,6 @@
 (function($){
 
-  $.julienMP3Player = {version: '0.1.1'};
+  $.julienMP3Player = { version: '0.1.1' };
 
   var settings = {
     autoplay: false,
@@ -10,9 +10,10 @@
     markup: '<div class="jmp3_container">\
               <a href="#" class="jmp3_play">Play</a>\
               <a href="#" class="jmp3_stop">Stop</a>\
-              <span class="jmp3_currentTrackName"></span>\
               <a href="#" class="jmp3_prev">Previous</a>\
               <a href="#" class="jmp3_next">Next</a>\
+              <a href="#" class="jmp3_infos">Infos</a>\
+              <span class="jmp3_currentTrackName"></span>\
             </div>'
   },
 
@@ -21,18 +22,6 @@
   methods = {
     _loading: function(){
       // console.log(((this.bytesLoaded/this.bytesTotal)*100)+'%');
-    },
-    _playSound: function(soundID, jmp3_content){
-      isPlaying = true;
-      soundManager.getSoundById(soundID).play({
-        onfinish: function(){
-          isPlaying = false;
-          jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
-        }
-      });
-      if (!jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){
-        jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
-      }
     },
     _pauseSound: function(soundID, jmp3_content){
       isPlaying = false;
@@ -61,6 +50,9 @@
         // otherwise, we're at the end, so return the first one
         return trackIDs[0];
       }
+    },
+    _displaySong: function(currentTrackID, jmp3_content){
+      jmp3_content.find('.jmp3_currentTrackName').text( $('.'+currentTrackID+':eq(0)').attr('title') );
     }
   };
 
@@ -86,14 +78,15 @@
       soundManager.debugMode = settings.soundManagerDebug;
       soundManager.onload = function(){
 
-        function playSound(soundID, jmp3_content){
+        function _playSound(soundID, jmp3_content){
           isPlaying = true;
+          methods._displaySong(soundID, $jmp3_content);
           soundManager.getSoundById(soundID).play({
             onfinish: function(){
               isPlaying = false;
               jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
               currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID);
-              playSound(currentSoundID, $jmp3_content);
+              _playSound(currentSoundID, $jmp3_content);
             }
           });
           if (!jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){
@@ -103,12 +96,13 @@
 
         // add the songs from the UL into the tracks array
         matchedObjects.find('li>a').each(function(i){
-          trackIDs.push('song_'+elementIndex+'_'+i.toString());
+          trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
           var sound = soundManager.createSound({
             id: trackIDs[trackIDs.length-1],
             url: $(this).attr('href') /*,
             whileloading: methods._loading */
           });
+          $(this).addClass(trackIDs[trackIDs.length-1]);
           tracks.push( sound );
         });
 
@@ -122,7 +116,7 @@
           if (isPlaying){
             methods._pauseSound(currentSoundID, $jmp3_content); // pause the current track
           } else {
-            playSound(currentSoundID, $jmp3_content); // play the current track
+            _playSound(currentSoundID, $jmp3_content); // play the current track
           }
           return false;
         });
@@ -137,7 +131,7 @@
         $jmp3_content.find('.jmp3_prev').bind('click.jmp3', function(){
           methods._stopSound(currentSoundID, $jmp3_content); // stop the currently playing sound
           currentSoundID = methods._getPrevTrackFrom(trackIDs, currentSoundID); // currentSoundID = previous song
-          playSound(currentSoundID, $jmp3_content); // play the previous track
+          _playSound(currentSoundID, $jmp3_content); // play the previous track
           return false;
         });
 
@@ -145,14 +139,15 @@
         $jmp3_content.find('.jmp3_next').bind('click.jmp3', function(){
           methods._stopSound(currentSoundID, $jmp3_content); // stop the currently playing sound
           currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID); // currentSoundID = next song
-          playSound(currentSoundID, $jmp3_content); // play the next track
+          _playSound(currentSoundID, $jmp3_content); // play the next track
           return false;
         });
 
+        // inject the player's markup into the DOM
         matchedObjects.after($jmp3_content);
 
         if (settings.autoplay){
-          playSound(currentSoundID, $jmp3_content);
+          _playSound(currentSoundID, $jmp3_content);
         }
 
       }

@@ -1,31 +1,45 @@
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Default theme
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 .jmp3_container {
   background: #a2b4b9;
   float: left;
   clear: both;
+  font: 10px/14px Arial, Helvetica, sans-serif;
+  padding-right: 1px;
 }
-.jmp3_container .jmp3_play,
-.jmp3_container .jmp3_pause,
-.jmp3_container .jmp3_stop,
-.jmp3_container .jmp3_next,
-.jmp3_container .jmp3_prev 
-{
-  width: 16px; height: 16px;
-  display: block;
-  float: left;
-  text-indent: -9999px;
-}
-.jmp3_container .jmp3_play {
-  background: url('../img/play.png') no-repeat left top;
-}
-.jmp3_container .jmp3_pause {
-  background: url('../img/pause.png') no-repeat left top;
-}
-.jmp3_container .jmp3_stop {
-  background: url('../img/stop.png') no-repeat left top;
-}
-.jmp3_container .jmp3_prev {
-  background: url('../img/prev.png') no-repeat left top;
-}
-.jmp3_container .jmp3_next {
-  background: url('../img/next.png') no-repeat left top;
-}
+  .jmp3_container .jmp3_play,
+  .jmp3_container .jmp3_pause,
+  .jmp3_container .jmp3_stop,
+  .jmp3_container .jmp3_infos,
+  .jmp3_container .jmp3_next,
+  .jmp3_container .jmp3_prev 
+  {
+    width: 16px; height: 16px;
+    display: block;
+    float: left;
+    text-indent: -9999px;
+  }
+  .jmp3_container .jmp3_play {
+    background: url('../img/play.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_pause {
+    background: url('../img/pause.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_stop {
+    background: url('../img/stop.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_prev {
+    background: url('../img/prev.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_next {
+    background: url('../img/next.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_infos {
+    background: url('../img/infos.png') no-repeat left top;
+  }
+  .jmp3_container .jmp3_currentTrackName {
+    background: #fff;
+  }
