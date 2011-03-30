@@ -19,6 +19,7 @@
   },
 
   isPlaying = false,
+  timeoutID = 0,
 
   methods = {
     _loading: function(){
@@ -33,6 +34,7 @@
       isPlaying = false;
       soundManager.getSoundById(soundID).stop();
       jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
+      clearTimeout(timeoutID);
     },
     _getPrevTrackFrom: function(trackIDs, currentTrackID, jmp3_content){
       var currentIndex = trackIDs.indexOf(currentTrackID);
@@ -57,7 +59,7 @@
       currentTrackDetails.fadeIn();
       currentTrackDetails.text( $('.'+currentTrackID+':eq(0)').attr('title') );
       if (settings.hideTrackDetailsAfterPlay !== false) {
-        setTimeout(function(){
+        timeoutID = setTimeout(function(){
           currentTrackDetails.fadeOut();
         }, settings.hideTrackDetailsAfterPlay * 1000);
       }
@@ -148,6 +150,12 @@
           methods._stopSound(currentSoundID, $jmp3_content); // stop the currently playing sound
           currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID); // currentSoundID = next song
           _playSound(currentSoundID, $jmp3_content); // play the next track
+          return false;
+        });
+
+        // show track infos
+        $jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
+          methods._displaySong(currentSoundID, $jmp3_content);
           return false;
         });
 
