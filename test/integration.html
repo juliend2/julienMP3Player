@@ -46,10 +46,23 @@
           equals($('.jmp3_play').hasClass('jmp3_pause'), false);
         });
 
-        test("that the song details are still there", function(){
-          expect(1);
-          DeLorean.advance(4000); // advane 4 seconds after we paused
+        test("the song details", function(){
+          expect(4);
+          // still visible after 4 seconds after pause
+          DeLorean.advance(4000); // advance 4 seconds after we paused
           equals($('.jmp3_currentTrackDetails').is(':visible'), true);
+          equals($('.jmp3_currentTrackDetails').text(), 'Angry cow');
+
+          // not visible after 4 seconds after stop after pause
+          $('.jmp3_stop').click();
+          DeLorean.advance(4000); // advance 4 seconds after we paused
+          equals($('.jmp3_currentTrackDetails').is(':visible'), false);
+
+          // not visible after 4 seconds after Stop
+          $('.jmp3_play').click();
+          $('.jmp3_stop').click();
+          DeLorean.advance(4000); // advance 4 seconds after we paused
+          equals($('.jmp3_currentTrackDetails').is(':visible'), false);
         });
 
       }
