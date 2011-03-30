@@ -2,6 +2,15 @@ h1. julienMP3Player
 
 jQuery plugin to embed an HTML5 MP3 player (multi-track).
 
+h2. Dependencies
+
+# "jQuery":http://jquery.com
+# "SoundManager2":http://www.schillmania.com/projects/soundmanager2
+
+h2. Demo
+
+"See a Demo here":http://juliendesrosiers.com/demo/julienMP3Player/
+
 h2. Usage
 
 First thing, you must have a node like this in your markup:
@@ -19,9 +28,3 @@ pre. $(function(){
     soundManagerSwfURL: './swf/' // where the swf folder is located
   });
 });
-
-h2. Dependencies
-
-# "jQuery":http://jquery.com
-# "SoundManager2":http://www.schillmania.com/projects/soundmanager2
-
