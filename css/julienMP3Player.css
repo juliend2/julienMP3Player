@@ -40,6 +40,6 @@
   .jmp3_container .jmp3_infos {
     background: url('../img/infos.png') no-repeat left top;
   }
-  .jmp3_container .jmp3_currentTrackName {
+  .jmp3_container .jmp3_currentTrackDetails {
     background: #fff;
   }

@@ -5,15 +5,16 @@
   var settings = {
     autoplay: false,
     playNextSoundOnFinish: true,
-    soundManagerSwfURL: './swf/',
-    soundManagerDebug: false,
+    hideTrackDetailsAfterPlay: 3, /* N (Number) seconds, or false (Boolean) to always show it */
+    soundManagerSwfURL: './swf/', /* path (String), relative to your html page that contains the SWF files that are needed by SoundManager2 */
+    soundManagerDebug: false, /* if true, displays the SoundManager2 debug info into the page and in the console */
     markup: '<div class="jmp3_container">\
               <a href="#" class="jmp3_play">Play</a>\
               <a href="#" class="jmp3_stop">Stop</a>\
               <a href="#" class="jmp3_prev">Previous</a>\
               <a href="#" class="jmp3_next">Next</a>\
               <a href="#" class="jmp3_infos">Infos</a>\
-              <span class="jmp3_currentTrackName"></span>\
+              <span class="jmp3_currentTrackDetails"></span>\
             </div>'
   },
 
@@ -52,7 +53,14 @@
       }
     },
     _displaySong: function(currentTrackID, jmp3_content){
-      jmp3_content.find('.jmp3_currentTrackName').text( $('.'+currentTrackID+':eq(0)').attr('title') );
+      currentTrackDetails = jmp3_content.find('.jmp3_currentTrackDetails');
+      currentTrackDetails.fadeIn();
+      currentTrackDetails.text( $('.'+currentTrackID+':eq(0)').attr('title') );
+      if (settings.hideTrackDetailsAfterPlay !== false) {
+        setTimeout(function(){
+          currentTrackDetails.fadeOut();
+        }, settings.hideTrackDetailsAfterPlay * 1000);
+      }
     }
   };
 
