@@ -166,6 +166,9 @@
         // show track infos
         $jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
           methods._displaySong(currentSoundID, $jmp3_content);
+          if ( $jmp3_content.find('.jmp3_currentTrackDetails').is(":visible") ){
+            $jmp3_content.find('.jmp3_currentTrackDetails').fadeOut();
+          }
           return false;
         });
 

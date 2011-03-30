@@ -25,6 +25,7 @@
       afterInstanciate: function(){
 
         DeLorean.globalApi(true); 
+
         test("that the plugin's markup is instanciated correctly", function(){
           expect(6);
           equals( $('.jmp3_play').length, 1 );
@@ -65,6 +66,28 @@
           equals($('.jmp3_currentTrackDetails').is(':visible'), false);
         });
 
+        test("the next/previous buttons", function(){
+          expect(9);
+
+          equals($('.jmp3_currentTrackDetails').text(), 'Angry cow');
+          $('.jmp3_next').click(); // Next
+          equals($('.jmp3_currentTrackDetails').text(), 'Fancy beer bottle pop');
+          $('.jmp3_next').click(); // Next
+          equals($('.jmp3_currentTrackDetails').text(), 'Rain');
+          $('.jmp3_prev').click(); // PREV ?!
+          equals($('.jmp3_currentTrackDetails').text(), 'Fancy beer bottle pop');
+          $('.jmp3_next').click(); // Next
+          equals($('.jmp3_currentTrackDetails').text(), 'Rain');
+          $('.jmp3_next').click(); // Next
+          equals($('.jmp3_currentTrackDetails').text(), 'Frogs');
+          $('.jmp3_next').click(); // Next
+          equals($('.jmp3_currentTrackDetails').text(), 'walking past sprinklers');
+          $('.jmp3_next').click(); // Next... to the first one
+          equals($('.jmp3_currentTrackDetails').text(), 'Angry cow');
+          $('.jmp3_stop').click(); 
+          $('.jmp3_play').click(); 
+          equals($('.jmp3_currentTrackDetails').text(), 'Angry cow');
+        });
       }
     });
 
