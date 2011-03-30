@@ -9,13 +9,14 @@
     soundManagerSwfURL: './swf/', /* path (String), relative to your html page that contains the SWF files that are needed by SoundManager2 */
     soundManagerDebug: false, /* if true, displays the SoundManager2 debug info into the page and in the console */
     markup: '<div class="jmp3_container">\
-              <a href="#" class="jmp3_play">Play</a>\
-              <a href="#" class="jmp3_stop">Stop</a>\
-              <a href="#" class="jmp3_prev">Previous</a>\
-              <a href="#" class="jmp3_next">Next</a>\
-              <a href="#" class="jmp3_infos">Infos</a>\
+              <a href="#" class="jmp3_play" title="Play/Pause">Play</a>\
+              <a href="#" class="jmp3_stop" title="Stop">Stop</a>\
+              <a href="#" class="jmp3_prev" title="Previous">Previous</a>\
+              <a href="#" class="jmp3_next" title="Next">Next</a>\
+              <a href="#" class="jmp3_infos" title="Show track informations">Infos</a>\
               <span class="jmp3_currentTrackDetails"></span>\
-            </div>'
+            </div>',
+    afterInstanciate: function(){} /* called right after instanciation of the player */
   },
 
   isPlaying = false,
@@ -41,8 +42,8 @@
       if (trackIDs[currentIndex - 1]){ // does the previous element exist?
         return trackIDs[currentIndex - 1];
       } else {
-        // otherwise, we're at the beginning, so return the last one
-        return trackIDs[trackIDs.length - 1];
+        // otherwise, we're at the beginning
+        return trackIDs[trackIDs.length - 1]; // so return the last one
       }
     },
     _getNextTrackFrom: function(trackIDs, currentTrackID, jmp3_content){
@@ -50,8 +51,8 @@
       if (trackIDs[currentIndex + 1]){ // does the next element exist?
         return trackIDs[currentIndex + 1];
       } else {
-        // otherwise, we're at the end, so return the first one
-        return trackIDs[0];
+        // otherwise, we're at the end
+        return trackIDs[0]; // so return the first one
       }
     },
     _displaySong: function(currentTrackID, jmp3_content){
@@ -166,6 +167,7 @@
           _playSound(currentSoundID, $jmp3_content);
         }
 
+        settings.afterInstanciate(); // call the callback
       }
     });
   };

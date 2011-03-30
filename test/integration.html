@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Integration testing for julienMP3Player</title>
+
+<link rel="stylesheet" type="text/css" href="../css/julienMP3Player.css" />
+<link rel="stylesheet" type="text/css" href="qunit.css" />
+<style>
+  #testing {
+    float: left;
+    clear: left;
+  }
+</style>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/soundmanager2-jsmin.js"></script>
+<script type="text/javascript" src="../js/jquery.julienMP3Player.js"></script>
+<script type="text/javascript" src="delorean.js"></script>
+<script type="text/javascript" src="qunit.js"></script>
+
+<script type="text/javascript">
+  $(function(){
+    $('#player').julienMP3Player({
+      soundManagerSwfURL: '../swf/',
+      afterInstanciate: function(){
+
+        DeLorean.globalApi(true); 
+        test("that the plugin's markup is instanciated correctly", function(){
+          expect(6);
+          equals( $('.jmp3_play').length, 1 );
+          equals( $('.jmp3_stop').length, 1 );
+          equals( $('.jmp3_prev').length, 1 );
+          equals( $('.jmp3_next').length, 1 );
+          equals( $('.jmp3_infos').length, 1 );
+          equals( $('.jmp3_currentTrackDetails').length, 1 );
+        });
+
+        test("that the play and pause buttons are working", function(){
+          expect(3);
+
+          $('.jmp3_play').click(); // Play
+          equals($('.jmp3_play').hasClass('jmp3_pause'), true);
+          equals($('.jmp3_currentTrackDetails').is(':visible'), true);
+
+          $('.jmp3_pause').click(); // Pause
+          equals($('.jmp3_play').hasClass('jmp3_pause'), false);
+        });
+
+        test("that the song details are still there", function(){
+          expect(1);
+          DeLorean.advance(4000); // advane 4 seconds after we paused
+          equals($('.jmp3_currentTrackDetails').is(':visible'), true);
+        });
+
+      }
+    });
+
+  });
+</script>
+</head>
+
+<body>
+  <ul id="player">
+    <li><a title="Angry cow" href="http://www.freshly-ground.com/data/audio/binaural/Mak.mp3">cow</a></li>
+    <li><a title="Fancy beer bottle pop" href="http://www.freshly-ground.com/data/audio/binaural/Fancy%20Beer%20Bottle%20Pop.mp3">bottle pop</a></li>
+    <li><a title="Rain" href="http://www.freshly-ground.com/data/audio/binaural/Rain 3.mp3">rain</a></li>
+    <li><a title="Frogs" href="http://www.freshly-ground.com/data/audio/binaural/Frogs @ Yahoo!.mp3">frogs</a></li>
+    <li><a title="walking past sprinklers" href="http://www.freshly-ground.com/data/audio/binaural/Walking past sprinklers, mailbox.mp3">sprinklers</a></li>
+  </ul>  
+
+  <div id="testing>
+    <h1 id="qunit-header">QUnit testing</h1>  
+    <h2 id="qunit-banner"></h2>  
+    <h2 id="qunit-userAgent"></h2>  
+    <ol id="qunit-tests">
+  </div>
+  
+</body>
+</html>
+
