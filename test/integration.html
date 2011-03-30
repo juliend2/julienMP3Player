@@ -88,6 +88,14 @@
           $('.jmp3_play').click(); 
           equals($('.jmp3_currentTrackDetails').text(), 'Angry cow');
         });
+
+        test("info button", function(){
+          expect(1);
+
+          $('.jmp3_infos').click();
+          DeLorean.advance(1600); // advance 4 seconds after we paused
+          equals($('.jmp3_currentTrackDetails').is(":visible"), false);
+        });
       }
     });
 
