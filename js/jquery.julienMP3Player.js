@@ -99,6 +99,7 @@
       // SoundManager2 options:
       soundManager.url = settings.soundManagerSwfURL;
       soundManager.debugMode = settings.soundManagerDebug;
+      soundManager.useFlashBlock = true;
       soundManager.onload = function(){
 
         function _playSound(soundID, jmp3_content){
