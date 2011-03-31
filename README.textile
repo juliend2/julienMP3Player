@@ -1,6 +1,6 @@
 h1. julienMP3Player
 
-jQuery plugin to embed an HTML5 MP3 player (multi-track).
+jQuery plugin to embed an MP3 player (multi-track).
 
 h2. Dependencies
 

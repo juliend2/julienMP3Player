@@ -1,6 +1,6 @@
 (function($){
 
-  $.julienMP3Player = { version: '0.1.1' };
+  $.julienMP3Player = { version: '0.1.2' };
 
   var settings = {
     autoplay: false,
