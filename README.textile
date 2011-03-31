@@ -28,3 +28,12 @@ pre. $(function(){
     soundManagerSwfURL: './swf/' // where the swf folder is located
   });
 });
+
+h2. ToDo
+
+Some of the features i still have to implement are:
+
+# a playehead
+# some kind of preload status
+# an API to play/pause/stop/next/previous the songs programmatically
+

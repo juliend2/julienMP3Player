@@ -9,11 +9,11 @@
     soundManagerSwfURL: './swf/', /* path (String), relative to your html page that contains the SWF files that are needed by SoundManager2 */
     soundManagerDebug: false, /* if true, displays the SoundManager2 debug info into the page and in the console */
     markup: '<div class="jmp3_container">\
-              <a href="#" class="jmp3_play" title="Play/Pause">Play</a>\
-              <a href="#" class="jmp3_stop" title="Stop">Stop</a>\
-              <a href="#" class="jmp3_prev" title="Previous">Previous</a>\
-              <a href="#" class="jmp3_next" title="Next">Next</a>\
-              <a href="#" class="jmp3_infos" title="Show track informations">Infos</a>\
+              <a href="javascript:void(0);" class="jmp3_play" title="Play/Pause">Play</a>\
+              <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
+              <a href="javascript:void(0);" class="jmp3_prev" title="Previous">Previous</a>\
+              <a href="javascript:void(0);" class="jmp3_next" title="Next">Next</a>\
+              <a href="javascript:void(0);" class="jmp3_infos" title="Show track informations">Infos</a>\
               <span class="jmp3_currentTrackDetails"></span>\
             </div>',
     afterInstanciate: function(){} /* called right after instanciation of the player */
@@ -89,8 +89,12 @@
         $.extend(settings, options);
       }
 
-      var tracks = [], trackIDs = [], matchedObjects = $(this),
+      var $jmp3_content = $(settings.markup),
+          tracks = [], trackIDs = [], matchedObjects = $(this),
           currentSoundID;
+
+      matchedObjects.after($jmp3_content);
+      matchedObjects.hide(); // hide the UL markup
 
       // SoundManager2 options:
       soundManager.url = settings.soundManagerSwfURL;
@@ -127,9 +131,7 @@
         });
 
         currentSoundID = tracks[0].sID;
-        matchedObjects.hide(); // hide the UL markup
 
-        var $jmp3_content = $(settings.markup);
 
         // play/pause current sound
         $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
@@ -173,7 +175,6 @@
         });
 
         // inject the player's markup into the DOM
-        matchedObjects.after($jmp3_content);
 
         if (settings.autoplay){
           _playSound(currentSoundID, $jmp3_content);
