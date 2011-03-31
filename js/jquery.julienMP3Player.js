@@ -8,6 +8,7 @@
     hideTrackDetailsAfterPlay: 3, /* N (Number) seconds, or false (Boolean) to always show it */
     soundManagerSwfURL: './swf/', /* path (String), relative to your html page that contains the SWF files that are needed by SoundManager2 */
     soundManagerDebug: false, /* if true, displays the SoundManager2 debug info into the page and in the console */
+    soundManagerHandleFlashBlock: true,
     markup: '<div class="jmp3_container">\
               <a href="javascript:void(0);" class="jmp3_play" title="Play/Pause">Play</a>\
               <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
@@ -99,7 +100,7 @@
       // SoundManager2 options:
       soundManager.url = settings.soundManagerSwfURL;
       soundManager.debugMode = settings.soundManagerDebug;
-      soundManager.useFlashBlock = true;
+      soundManager.useFlashBlock = settings.soundManagerHandleFlashBlock;
       soundManager.onload = function(){
 
         function _playSound(soundID, jmp3_content){
