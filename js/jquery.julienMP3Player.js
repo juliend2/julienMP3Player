@@ -62,11 +62,21 @@
         return trackIDs[0]; // so return the first one
       }
     },
-    _displaySong: function(currentTrackID, jmp3_content){
+    _displaySong: function(currentTrackID, jmp3_content, toggle){
+      toggle = toggle || false;
       currentTrackDetails = jmp3_content.find('.jmp3_currentTrackDetails');
-      currentTrackDetails.fadeIn();
-      currentTrackDetails.text( $('.'+currentTrackID+':eq(0)').attr('title') );
-      this._fadeOutDetails(currentTrackDetails);
+      if      ( toggle && currentTrackDetails.is(':hidden') ){
+        currentTrackDetails.fadeIn();
+        currentTrackDetails.text( $('.'+currentTrackID+':eq(0)').attr('title') );
+      }
+      else if ( toggle && !currentTrackDetails.is(':hidden') ) {
+        currentTrackDetails.fadeOut();
+      }
+      else    {
+        currentTrackDetails.fadeIn();
+        currentTrackDetails.text( $('.'+currentTrackID+':eq(0)').attr('title') );
+        this._fadeOutDetails(currentTrackDetails);
+      }
     },
     _fadeOutDetails: function(currentTrackDetails){
       if (settings.hideTrackDetailsAfterPlay !== false) {
@@ -171,10 +181,7 @@
 
         // show track infos
         $jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
-          methods._displaySong(currentSoundID, $jmp3_content);
-          if ( $jmp3_content.find('.jmp3_currentTrackDetails').is(":visible") ){
-            $jmp3_content.find('.jmp3_currentTrackDetails').fadeOut();
-          }
+          methods._displaySong(currentSoundID, $jmp3_content, true);
           return false;
         });
 
