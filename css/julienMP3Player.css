@@ -10,6 +10,30 @@
   font: 10px/14px Arial, Helvetica, sans-serif;
   padding-right: 1px;
 }
+  .jmp3_container .jmp3_trackbar {
+    width: 150px; height: 16px;
+    display: block;
+    float: left;
+    position: relative;
+    background: url('../img/trackbar_notloaded.png') repeat-x left top;
+    z-index: 0;
+  }
+    .jmp3_container .jmp3_trackbar .jmp3_loaded {
+      width: 0; height: 16px;
+      display: block;
+      position: absolute;
+      left: 0; top: 0;
+      background: url('../img/trackbar_loaded.png') repeat-x left top;
+      z-index: 1;
+    }
+    .jmp3_container .jmp3_trackbar .jmp3_playhead {
+      width: 8px; height: 16px;
+      display: block;
+      position: absolute;
+      left: 0; top: 0;
+      background: url('../img/playhead.png') no-repeat left center;
+      z-index: 2;
+    }
   .jmp3_container .jmp3_play,
   .jmp3_container .jmp3_pause,
   .jmp3_container .jmp3_stop,

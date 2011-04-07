@@ -13,6 +13,7 @@
     markup: '<div class="jmp3_container">\
               <a href="javascript:void(0);" class="jmp3_play" title="Play/Pause">Play</a>\
               <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
+              <span class="jmp3_trackbar"><span class="jmp3_loaded"></span><span class="jmp3_playhead"></span></span>\
               <a href="javascript:void(0);" class="jmp3_prev" title="Previous">Previous</a>\
               <a href="javascript:void(0);" class="jmp3_next" title="Next">Next</a>\
               <a href="javascript:void(0);" class="jmp3_infos" title="Show track informations">Infos</a>\
@@ -183,6 +184,11 @@
         $jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
           methods._displaySong(currentSoundID, $jmp3_content, true);
           return false;
+        });
+
+        $jmp3_content.find('.jmp3_playhead').draggable({
+          containment: 'parent', // which is .jmp3_trackbar
+          axis: 'x'
         });
 
         // inject the player's markup into the DOM
