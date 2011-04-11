@@ -104,8 +104,9 @@
 
       var $jmp3_content = $(settings.markup),
           tracks = [], trackIDs = [], matchedObjects = $(this),
-          currentSoundID;
+          currentSoundID, defaultSliderOffset, trackbarWidth;
 
+      // inject the player's markup into the DOM
       matchedObjects.after($jmp3_content);
       matchedObjects.hide(); // hide the UL markup
 
@@ -115,6 +116,12 @@
       soundManager.useFlashBlock = settings.soundManagerHandleFlashBlock;
       soundManager.useHTML5Audio = settings.soundManagerHTML5Audio;
       soundManager.onload = function(){
+
+        function _updateTime(currentPosition, totalTime, jmp3_content, trackbarWidth){
+          //console.log(currentPosition, totalTime, trackbarWidth);
+          //console.log(currentPosition, totalTime, trackbarWidth, currentPosition / totalTime * trackbarWidth, Math.floor(currentPosition / totalTime * 100).toString() + " %");
+          jmp3_content.find('.jmp3_playhead').css({left: currentPosition / totalTime * trackbarWidth});
+        }
 
         function _playSound(soundID, jmp3_content){
           isPlaying = true;
@@ -138,7 +145,11 @@
           trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
           var sound = soundManager.createSound({
             id: trackIDs[trackIDs.length-1],
-            url: $(this).attr('href') /*,
+            url: $(this).attr('href'),
+            whileplaying: function(){
+              _updateTime(this.position, this.duration, $jmp3_content, trackbarWidth);
+            }
+            /*,
             whileloading: methods._loading */
           });
           $(this).addClass(trackIDs[trackIDs.length-1]);
@@ -191,7 +202,8 @@
           axis: 'x'
         });
 
-        // inject the player's markup into the DOM
+        defaultSliderOffset = $jmp3_content.find('.jmp3_playhead:eq(0)').offset().left;
+        trackbarWidth = $jmp3_content.find('.jmp3_trackbar:eq(0)').width();
 
         if (settings.autoplay){
           _playSound(currentSoundID, $jmp3_content);
