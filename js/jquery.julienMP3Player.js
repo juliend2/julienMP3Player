@@ -15,7 +15,7 @@
               <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
               <a href="javascript:void(0);" class="jmp3_prev" title="Previous">Previous</a>\
               <a href="javascript:void(0);" class="jmp3_next" title="Next">Next</a>\
-              <a href="javascript:void(0);" class="jmp3_infos" title="Show track informations">Infos</a>\
+              <a href="javascript:void(0);" class="jmp3_infos" title="Show track information">Infos</a>\
               <span class="jmp3_currentTrackDetails"></span>\
             </div>',
     afterInstanciate: function(){} /* called right after instanciation of the player */
