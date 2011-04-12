@@ -26,9 +26,6 @@
   timeoutID = 0,
 
   methods = {
-    _loading: function(){
-      // console.log(((this.bytesLoaded/this.bytesTotal)*100)+'%');
-    },
     _pauseSound: function(soundID, jmp3_content){
       isPlaying = false;
       soundManager.getSoundById(soundID).pause();
@@ -125,6 +122,10 @@
           $jmp3_content.find('.jmp3_playhead').css({left: (currentPosition / totalTime * trackbarWidth)-(playheadWidth/2)});
         }
 
+        function _updateLoading(bytesLoaded, bytesTotal){
+          $jmp3_content.find('.jmp3_loaded').width(bytesLoaded / bytesTotal * trackbarWidth);
+        }
+
         function _playSound(soundID, jmp3_content){
           isPlaying = true;
           methods._displaySong(soundID, $jmp3_content);
@@ -149,17 +150,17 @@
             id: trackIDs[trackIDs.length-1],
             url: $(this).attr('href'),
             whileplaying: function(){
-              _updateTime(this.position, this.duration);
+              _updateTime(this.position, this.durationEstimate);
+            },
+            whileloading: function(){
+              _updateLoading(this.bytesLoaded, this.bytesTotal);
             }
-            /*,
-            whileloading: methods._loading */
           });
           $(this).addClass(trackIDs[trackIDs.length-1]);
           tracks.push( sound );
         });
 
         currentSoundID = tracks[0].sID;
-
 
         // play/pause current sound
         $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
