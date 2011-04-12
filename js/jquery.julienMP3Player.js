@@ -60,6 +60,17 @@
       }
       clearTimeout(timeoutID);
     },
+    _playheadStartDrag: function(event, ui) {
+      // pause the current sound until we release the playhead
+      methods._pauseSound(this.currentSoundID, this.jmp3_content);
+    },
+    _playheadStopDrag: function(event, ui) {
+      var currentSound = soundManager.getSoundById(this.currentSoundID);
+      var newPlayheadPosition = this.jmp3_content.find('.jmp3_playhead').offset().left;
+      var newTrackPosition = currentSound.durationEstimate * (newPlayheadPosition - this.defaultSliderOffset) / this.trackbarWidth;
+      currentSound.setPosition(newTrackPosition);
+      methods._playSound.apply(this, [this.currentSoundID]);
+    },
     _updateLoading: function(bytesLoaded, bytesTotal){
       this.jmp3_content.find('.jmp3_loaded').width(bytesLoaded / bytesTotal * this.trackbarWidth);
     },
@@ -148,7 +159,6 @@
       soundManager.useHTML5Audio = settings.soundManagerHTML5Audio;
       soundManager.onload = function(){
 
-
         // add the songs from the UL into the tracks array
         matchedObjects.find('li>a').each(function(i){
           trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
@@ -208,11 +218,17 @@
 
         privates.jmp3_content.find('.jmp3_playhead').draggable({
           containment: 'parent', // ...which is .jmp3_trackbar
-          axis: 'x'
+          axis: 'x',
+          start: function(e, ui){
+            methods._playheadStartDrag.apply(privates, [e, ui]);
+          },
+          stop: function(e, ui){
+            methods._playheadStopDrag.apply(privates, [e, ui]);
+          }
         });
 
-        privates.defaultSliderOffset = privates.jmp3_content.find('.jmp3_playhead:eq(0)').offset().left;
-        privates.trackbarWidth = privates.jmp3_content.find('.jmp3_trackbar:eq(0)').width();
+        privates.defaultSliderOffset = privates.jmp3_content.find('.jmp3_playhead').offset().left;
+        privates.trackbarWidth = privates.jmp3_content.find('.jmp3_trackbar').width();
         privates.playheadWidth = privates.jmp3_content.find('.jmp3_playhead').width();
 
         if (settings.autoplay){
