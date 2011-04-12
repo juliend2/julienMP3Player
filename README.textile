@@ -5,6 +5,7 @@ jQuery plugin to embed an MP3 player (multi-track).
 h2. Dependencies
 
 # "jQuery":http://jquery.com
+# "jQuery UI *Draggable*":http://jqueryui.com/ (which depends on jQuery UI's *Core*, *Widget* and *Mouse*)
 # "SoundManager2":http://www.schillmania.com/projects/soundmanager2
 
 h2. Demo
