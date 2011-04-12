@@ -12,6 +12,7 @@
 }
   .jmp3_container .jmp3_trackbar {
     width: 150px; height: 16px;
+    margin: 0 5px;
     display: block;
     float: left;
     position: relative;

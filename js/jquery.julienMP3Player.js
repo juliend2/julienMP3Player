@@ -90,9 +90,13 @@
 
   $.fn.julienMP3Player = function(options){
 
-    // We need SoundManager2
+    // We need SoundManager2 and jQuery ui
     if (!soundManager) {
       alert("You need to include SoundManager2 for this plugin to work.");
+      return false;
+    }
+    if (!$.fn.draggable) {
+      alert("You need to include jQuery UI's draggable plugin for this plugin to work.");
       return false;
     }
 
@@ -104,7 +108,7 @@
 
       var $jmp3_content = $(settings.markup),
           tracks = [], trackIDs = [], matchedObjects = $(this),
-          currentSoundID, defaultSliderOffset, trackbarWidth;
+          currentSoundID, defaultSliderOffset, trackbarWidth, playheadWidth;
 
       // inject the player's markup into the DOM
       matchedObjects.after($jmp3_content);
@@ -117,10 +121,8 @@
       soundManager.useHTML5Audio = settings.soundManagerHTML5Audio;
       soundManager.onload = function(){
 
-        function _updateTime(currentPosition, totalTime, jmp3_content, trackbarWidth){
-          //console.log(currentPosition, totalTime, trackbarWidth);
-          //console.log(currentPosition, totalTime, trackbarWidth, currentPosition / totalTime * trackbarWidth, Math.floor(currentPosition / totalTime * 100).toString() + " %");
-          jmp3_content.find('.jmp3_playhead').css({left: currentPosition / totalTime * trackbarWidth});
+        function _updateTime(currentPosition, totalTime){
+          $jmp3_content.find('.jmp3_playhead').css({left: (currentPosition / totalTime * trackbarWidth)-(playheadWidth/2)});
         }
 
         function _playSound(soundID, jmp3_content){
@@ -147,7 +149,7 @@
             id: trackIDs[trackIDs.length-1],
             url: $(this).attr('href'),
             whileplaying: function(){
-              _updateTime(this.position, this.duration, $jmp3_content, trackbarWidth);
+              _updateTime(this.position, this.duration);
             }
             /*,
             whileloading: methods._loading */
@@ -204,6 +206,7 @@
 
         defaultSliderOffset = $jmp3_content.find('.jmp3_playhead:eq(0)').offset().left;
         trackbarWidth = $jmp3_content.find('.jmp3_trackbar:eq(0)').width();
+        playheadWidth = $jmp3_content.find('.jmp3_playhead').width();
 
         if (settings.autoplay){
           _playSound(currentSoundID, $jmp3_content);
