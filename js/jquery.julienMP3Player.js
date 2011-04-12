@@ -26,6 +26,23 @@
   timeoutID = 0,
 
   methods = {
+    _playSound: function(soundID){
+      var that = this;
+      isPlaying = true;
+      methods._displaySong(soundID, this.jmp3_content);
+      soundManager.getSoundById(soundID).play({
+        onfinish: function(){
+          isPlaying = false;
+          that.jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
+          that.currentSoundID = methods._getNextTrackFrom(trackIDs, that.currentSoundID);
+          methods._playSound.apply(that, [that.currentSoundID, that.jmp3_content]);
+        }
+      });
+      if (this.jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){ // resume
+      } else { // pause
+        this.jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
+      }
+    },
     _pauseSound: function(soundID, jmp3_content){
       isPlaying = false;
       soundManager.getSoundById(soundID).pause();
@@ -39,8 +56,15 @@
       jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
       if (! changeSong){
         jmp3_content.find('.jmp3_currentTrackDetails').fadeOut();
+        jmp3_content.find('.jmp3_playhead').css({left: -(this.playheadWidth/2)});
       }
       clearTimeout(timeoutID);
+    },
+    _updateLoading: function(bytesLoaded, bytesTotal){
+      this.jmp3_content.find('.jmp3_loaded').width(bytesLoaded / bytesTotal * this.trackbarWidth);
+    },
+    _updateTime: function(currentPosition, totalTime){
+      this.jmp3_content.find('.jmp3_playhead').css({left: (currentPosition / totalTime * this.trackbarWidth)-(this.playheadWidth/2)});
     },
     _getPrevTrackFrom: function(trackIDs, currentTrackID, jmp3_content){
       var currentIndex = trackIDs.indexOf(currentTrackID);
@@ -103,12 +127,18 @@
         $.extend(settings, options);
       }
 
-      var $jmp3_content = $(settings.markup),
-          tracks = [], trackIDs = [], matchedObjects = $(this),
-          currentSoundID, defaultSliderOffset, trackbarWidth, playheadWidth;
+      var tracks = [], trackIDs = [], matchedObjects = $(this), that = this;
+
+      var privates = {
+        jmp3_content: $(settings.markup),
+        playheadWidth: null,
+        trackbarWidth: null,
+        defaultSliderOffset: null,
+        currentSoundID: null
+      };
 
       // inject the player's markup into the DOM
-      matchedObjects.after($jmp3_content);
+      matchedObjects.after(privates.jmp3_content);
       matchedObjects.hide(); // hide the UL markup
 
       // SoundManager2 options:
@@ -118,30 +148,6 @@
       soundManager.useHTML5Audio = settings.soundManagerHTML5Audio;
       soundManager.onload = function(){
 
-        function _updateTime(currentPosition, totalTime){
-          $jmp3_content.find('.jmp3_playhead').css({left: (currentPosition / totalTime * trackbarWidth)-(playheadWidth/2)});
-        }
-
-        function _updateLoading(bytesLoaded, bytesTotal){
-          $jmp3_content.find('.jmp3_loaded').width(bytesLoaded / bytesTotal * trackbarWidth);
-        }
-
-        function _playSound(soundID, jmp3_content){
-          isPlaying = true;
-          methods._displaySong(soundID, $jmp3_content);
-          soundManager.getSoundById(soundID).play({
-            onfinish: function(){
-              isPlaying = false;
-              jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
-              currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID);
-              _playSound(currentSoundID, $jmp3_content);
-            }
-          });
-          if (jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){ // resume
-          } else { // pause
-            jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
-          }
-        }
 
         // add the songs from the UL into the tracks array
         matchedObjects.find('li>a').each(function(i){
@@ -150,67 +156,67 @@
             id: trackIDs[trackIDs.length-1],
             url: $(this).attr('href'),
             whileplaying: function(){
-              _updateTime(this.position, this.durationEstimate);
+              methods._updateTime.apply(privates, [this.position, this.durationEstimate]);
             },
             whileloading: function(){
-              _updateLoading(this.bytesLoaded, this.bytesTotal);
+              methods._updateLoading.apply(privates, [this.bytesLoaded, this.bytesTotal]);
             }
           });
           $(this).addClass(trackIDs[trackIDs.length-1]);
           tracks.push( sound );
         });
 
-        currentSoundID = tracks[0].sID;
+        privates.currentSoundID = tracks[0].sID;
 
         // play/pause current sound
-        $jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
+        privates.jmp3_content.find('.jmp3_play').bind('click.jmp3', function(){
           if (isPlaying){
-            methods._pauseSound(currentSoundID, $jmp3_content); // pause the current track
+            methods._pauseSound(privates.currentSoundID, privates.jmp3_content); // pause the current track
           } else {
-            _playSound(currentSoundID, $jmp3_content); // play the current track
+            methods._playSound.apply(privates, [privates.currentSoundID]); // play the current track
           }
           return false;
         });
 
         // stop current sound
-        $jmp3_content.find('.jmp3_stop').bind('click.jmp3', function(){
-          methods._stopSound(currentSoundID, $jmp3_content); // stop the current track
+        privates.jmp3_content.find('.jmp3_stop').bind('click.jmp3', function(){
+          methods._stopSound.apply(privates, [privates.currentSoundID, privates.jmp3_content]); // stop the current track
           return false;
         });
 
         // play previous sound
-        $jmp3_content.find('.jmp3_prev').bind('click.jmp3', function(){
-          methods._stopSound(currentSoundID, $jmp3_content, true); // stop the currently playing sound
-          currentSoundID = methods._getPrevTrackFrom(trackIDs, currentSoundID); // currentSoundID = previous song
-          _playSound(currentSoundID, $jmp3_content); // play the previous track
+        privates.jmp3_content.find('.jmp3_prev').bind('click.jmp3', function(){
+          methods._stopSound(privates.currentSoundID, privates.jmp3_content, true); // stop the currently playing sound
+          privates.currentSoundID = methods._getPrevTrackFrom(trackIDs, privates.currentSoundID); // currentSoundID = previous song
+          methods._playSound.apply(privates, [privates.currentSoundID]); // play the previous track
           return false;
         });
 
         // play next sound
-        $jmp3_content.find('.jmp3_next').bind('click.jmp3', function(){
-          methods._stopSound(currentSoundID, $jmp3_content, true); // stop the currently playing sound
-          currentSoundID = methods._getNextTrackFrom(trackIDs, currentSoundID); // currentSoundID = next song
-          _playSound(currentSoundID, $jmp3_content); // play the next track
+        privates.jmp3_content.find('.jmp3_next').bind('click.jmp3', function(){
+          methods._stopSound(privates.currentSoundID, privates.jmp3_content, true); // stop the currently playing sound
+          privates.currentSoundID = methods._getNextTrackFrom(trackIDs, privates.currentSoundID); // currentSoundID = next song
+          methods._playSound.apply(privates, [privates.currentSoundID]); // play the next track
           return false;
         });
 
         // show track infos
-        $jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
-          methods._displaySong(currentSoundID, $jmp3_content, true);
+        privates.jmp3_content.find('.jmp3_infos').bind('click.jmp3', function(){
+          methods._displaySong(privates.currentSoundID, privates.jmp3_content, true);
           return false;
         });
 
-        $jmp3_content.find('.jmp3_playhead').draggable({
-          containment: 'parent', // which is .jmp3_trackbar
+        privates.jmp3_content.find('.jmp3_playhead').draggable({
+          containment: 'parent', // ...which is .jmp3_trackbar
           axis: 'x'
         });
 
-        defaultSliderOffset = $jmp3_content.find('.jmp3_playhead:eq(0)').offset().left;
-        trackbarWidth = $jmp3_content.find('.jmp3_trackbar:eq(0)').width();
-        playheadWidth = $jmp3_content.find('.jmp3_playhead').width();
+        privates.defaultSliderOffset = privates.jmp3_content.find('.jmp3_playhead:eq(0)').offset().left;
+        privates.trackbarWidth = privates.jmp3_content.find('.jmp3_trackbar:eq(0)').width();
+        privates.playheadWidth = privates.jmp3_content.find('.jmp3_playhead').width();
 
         if (settings.autoplay){
-          _playSound(currentSoundID, $jmp3_content);
+          methods._playSound.apply(privates, [privates.currentSoundID]);
         }
 
         settings.afterInstanciate(); // call the callback
