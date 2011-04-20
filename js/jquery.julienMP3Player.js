@@ -14,6 +14,7 @@
               <a href="javascript:void(0);" class="jmp3_play" title="Play/Pause">Play</a>\
               <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
               <span class="jmp3_trackbar"><span class="jmp3_loaded"></span><span class="jmp3_playhead"></span></span>\
+              <span class="jmp3_timer"></span>\
               <a href="javascript:void(0);" class="jmp3_prev" title="Previous">Previous</a>\
               <a href="javascript:void(0);" class="jmp3_next" title="Next">Next</a>\
               <a href="javascript:void(0);" class="jmp3_infos" title="Show track information">Infos</a>\
@@ -75,6 +76,9 @@
       this.jmp3_content.find('.jmp3_loaded').width(bytesLoaded / bytesTotal * this.trackbarWidth);
     },
     _updateTime: function(currentPosition, totalTime){
+      // change the timer's value:
+      this.jmp3_content.find('.jmp3_timer').text( methods._toMinutesAndSeconds(currentPosition / 1000) );
+      // move the playhead:
       this.jmp3_content.find('.jmp3_playhead').css({left: (currentPosition / totalTime * this.trackbarWidth)-(this.playheadWidth/2)});
     },
     _getPrevTrackFrom: function(trackIDs, currentTrackID, jmp3_content){
@@ -117,6 +121,11 @@
           currentTrackDetails.fadeOut();
         }, settings.hideTrackDetailsAfterPlay * 1000);
       }
+    },
+    _toMinutesAndSeconds: function(number){
+      var m = Math.floor(number / 60);
+      var s = Math.floor(number % 60);
+      return (m+":"+(s<10?"0":"")+s);
     }
   };
 
