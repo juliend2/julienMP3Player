@@ -171,7 +171,9 @@
 
         // add the songs from the UL into the tracks array
         matchedObjects.find('li>a').each(function(i){
-          privates.trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
+          var songID = 'jmp3_song_'+elementIndex+'_'+i.toString();
+          $(this).addClass(songID);
+          privates.trackIDs.push(songID);
           var sound = soundManager.createSound({
             id: privates.trackIDs[privates.trackIDs.length-1],
             url: $(this).attr('href'),
