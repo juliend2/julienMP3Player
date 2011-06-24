@@ -35,7 +35,7 @@
         onfinish: function(){
           isPlaying = false;
           that.jmp3_content.find('.jmp3_play').removeClass('jmp3_pause');
-          that.currentSoundID = methods._getNextTrackFrom(trackIDs, that.currentSoundID);
+          that.currentSoundID = methods._getNextTrackFrom(that.trackIDs, that.currentSoundID);
           methods._playSound.apply(that, [that.currentSoundID, that.jmp3_content]);
         }
       });
@@ -154,7 +154,8 @@
         playheadWidth: null,
         trackbarWidth: null,
         defaultSliderOffset: null,
-        currentSoundID: null
+        currentSoundID: null,
+        trackIDs: []
       };
 
       // inject the player's markup into the DOM
@@ -170,9 +171,9 @@
 
         // add the songs from the UL into the tracks array
         matchedObjects.find('li>a').each(function(i){
-          trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
+          privates.trackIDs.push('jmp3_song_'+elementIndex+'_'+i.toString());
           var sound = soundManager.createSound({
-            id: trackIDs[trackIDs.length-1],
+            id: privates.trackIDs[privates.trackIDs.length-1],
             url: $(this).attr('href'),
             whileplaying: function(){
               methods._updateTime.apply(privates, [this.position, this.durationEstimate]);
@@ -181,7 +182,7 @@
               methods._updateLoading.apply(privates, [this.bytesLoaded, this.bytesTotal]);
             }
           });
-          $(this).addClass(trackIDs[trackIDs.length-1]);
+          $(this).addClass(privates.trackIDs[trackIDs.length-1]);
           tracks.push( sound );
         });
 
@@ -206,7 +207,7 @@
         // play previous sound
         privates.jmp3_content.find('.jmp3_prev').bind('click.jmp3', function(){
           methods._stopSound(privates.currentSoundID, privates.jmp3_content, true); // stop the currently playing sound
-          privates.currentSoundID = methods._getPrevTrackFrom(trackIDs, privates.currentSoundID); // currentSoundID = previous song
+          privates.currentSoundID = methods._getPrevTrackFrom(privates.trackIDs, privates.currentSoundID); // currentSoundID = previous song
           methods._playSound.apply(privates, [privates.currentSoundID]); // play the previous track
           return false;
         });
@@ -214,7 +215,7 @@
         // play next sound
         privates.jmp3_content.find('.jmp3_next').bind('click.jmp3', function(){
           methods._stopSound(privates.currentSoundID, privates.jmp3_content, true); // stop the currently playing sound
-          privates.currentSoundID = methods._getNextTrackFrom(trackIDs, privates.currentSoundID); // currentSoundID = next song
+          privates.currentSoundID = methods._getNextTrackFrom(privates.trackIDs, privates.currentSoundID); // currentSoundID = next song
           methods._playSound.apply(privates, [privates.currentSoundID]); // play the next track
           return false;
         });
