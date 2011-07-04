@@ -1,6 +1,6 @@
 (function($){
 
-  $.julienMP3Player = { version: '0.1.3' };
+  $.julienMP3Player = { version: '0.1.4' };
 
   var settings = {
     autoplay: false,
@@ -20,7 +20,8 @@
               <a href="javascript:void(0);" class="jmp3_infos" title="Show track information">Infos</a>\
               <span class="jmp3_currentTrackDetails"></span>\
             </div>',
-    afterInstanciate: function(){} /* called right after instanciation of the player */
+    afterInstanciate: function(){}, /* called right after instanciation of the player */
+    afterPlay: function(){} /* called right after a song is played */
   },
 
   isPlaying = false,
@@ -39,6 +40,7 @@
           methods._playSound.apply(that, [that.currentSoundID, that.jmp3_content]);
         }
       });
+      settings.afterPlay();
       if (this.jmp3_content.find('.jmp3_play').hasClass('jmp3_pause')){ // resume
       } else { // pause
         this.jmp3_content.find('.jmp3_play').addClass('jmp3_pause');
@@ -252,4 +254,5 @@
     });
   };
 })(jQuery);
+
 
