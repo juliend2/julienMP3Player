@@ -11,9 +11,12 @@
 <script type="text/javascript" src="js/jquery.julienMP3Player.js"></script>
 
 <script type="text/javascript">
+  var SM2_DEFER = true;
   $(function(){
     $('#player').julienMP3Player({
       soundManagerSwfURL: './swf/',
+      soundManagerFlashLoadTimeout: 4000,
+      soundManagerDebug: false,
       autoplay: true
     });
   });

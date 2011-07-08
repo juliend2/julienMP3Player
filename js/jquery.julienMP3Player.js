@@ -1,6 +1,6 @@
 (function($){
 
-  $.julienMP3Player = { version: '0.1.4' };
+  $.julienMP3Player = { version: '0.1.5' };
 
   var settings = {
     autoplay: false,
@@ -10,6 +10,7 @@
     soundManagerDebug: false, /* if true, displays the SoundManager2 debug info into the page and in the console */
     soundManagerHandleFlashBlock: true,
     soundManagerHTML5Audio: true,
+    soundManagerFlashLoadTimeout: 1000,
     markup: '<div class="jmp3_container">\
               <a href="javascript:void(0);" class="jmp3_play" title="Play/Pause">Play</a>\
               <a href="javascript:void(0);" class="jmp3_stop" title="Stop">Stop</a>\
@@ -169,6 +170,11 @@
       soundManager.debugMode = settings.soundManagerDebug;
       soundManager.useFlashBlock = settings.soundManagerHandleFlashBlock;
       soundManager.useHTML5Audio = settings.soundManagerHTML5Audio;
+      // soundManager.debugFlash = true;
+      soundManager.flashLoadTimeout = settings.soundManagerFlashLoadTimeout;
+      soundManager.onerror = function() {
+        soundManager.reboot(); // HACK FOR IE !!!!
+      };
       soundManager.onload = function(){
 
         // add the songs from the UL into the tracks array
