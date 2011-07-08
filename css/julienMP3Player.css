@@ -1,4 +1,5 @@
 #soundmanager-debug { display: none !important;} /* comment this out to debug */
+#soundmanager-debug-toggle { display: none !important;} /* comment this out to debug */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Default theme
