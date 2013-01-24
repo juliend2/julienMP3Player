@@ -10,7 +10,7 @@ h2. Dependencies
 
 h2. Demo
 
-"See a Demo here":http://www.juliendesrosiers.com/demos/julienmp3player/
+"See a Demo here":http://www.juliendesrosiers.com/demo/julienmp3player/
 
 h2. Usage
 
